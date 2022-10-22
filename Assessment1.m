@@ -1,11 +1,11 @@
 close all
-clear all
+clear
 clc
 
 %% Data
 
 L=2;       %[m]
-rho=1;     %[Kg/m^3]
+rho=1;     %[kg/m^3]
 A_in=0.5;  %[m^2]
 A_out=0.1; %[m^2]
 p_0=10;    %[Pa]
@@ -30,17 +30,17 @@ A_u=A(x_u);
 u_old=zeros(n,1);
 p=zeros(N,1);
 
-m=0.4;   %[Kg/s]   we have to choose this 
+m=1;   %[kg/s]   initial guess for mass flow rate
 u_old=m./(rho*A_u);
 p=p_0-(p_0-p_out).*x_p/L;
 
 %% solve the problem
-alpha_p=0.1;   % we have to choose this value
-alpha_u=0.1;   % we have to choose this value
+alpha_p=0.1;   % under-relaxation coefficient-> to be tuned
+alpha_u=0.1;   % under-relaxation coefficient-> to be tuned
 it=0;
 toll_u=1e-6;
 toll_p=1e-6;
-it_max=12000;
+it_max=1000;
 r_u=10;
 r_p=10;
 
