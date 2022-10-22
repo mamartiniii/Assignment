@@ -12,7 +12,7 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 
 %% Grid
-N=100;
+N=21;
 n=N-1;
 x_p=linspace(0,L,N);
 x_u=linspace(x_p(2)/2,L-x_p(2)/2,n);
@@ -30,13 +30,13 @@ A_u=A(x_u);
 u_old=zeros(n,1);
 p=zeros(N,1);
 
-m=0.5;   %[Kg/s]   we have to choose this 
+m=0.4;   %[Kg/s]   we have to choose this 
 u_old=m./(rho*A_u);
 p=p_0-(p_0-p_out).*x_p/L;
 
 %% solve the problem
-alpha_p=0.9;   % we have to choose this value
-alpha_u=0.9;   % we have to choose this value
+alpha_p=0.1;   % we have to choose this value
+alpha_u=0.1;   % we have to choose this value
 it=0;
 toll_u=1e-6;
 toll_p=1e-6;
@@ -59,7 +59,7 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     %CV1
     F_a=rho*u_old(1)*A_u(1);
     F_b=rho*(u_old(1)+u_old(2))/2*A_p(2);
-    M_u(1,1)=F_b+F_a/2*A_u(1)^2/A_p(1)^2;
+    M_u(1,1)=F_b+F_a/2*(A_u(1)/A_p(1))^2;
     b_u(1)=(p_0-p(2))*A_u(1)+F_a*A_u(1)/A_p(1)*u_old(1);
 
     %CVn
@@ -136,3 +136,6 @@ title('pressure')
 figure
 plot(x_u,u_new,'Linewidth',2)
 title('velocity')
+
+
+%% Exact solution
