@@ -1,5 +1,5 @@
 close all
-clear all
+clear 
 clc
 
 %% Data
@@ -12,7 +12,7 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 
 %% Grid
-N=21;
+N=100;
 n=N-1;
 x_p=linspace(0,L,N);
 x_u=linspace(x_p(2)/2,L-x_p(2)/2,n);
@@ -35,14 +35,16 @@ u_old=m./(rho*A_u);
 p=p_0-(p_0-p_out).*x_p/L;
 
 %% solve the problem
-alpha_p=0.1;   % under-relaxation coefficient-> to be tuned
-alpha_u=0.1;   % under-relaxation coefficient-> to be tuned
+alpha_p=0.02;   % under-relaxation coefficient-> to be tuned
+alpha_u=0.02;   % under-relaxation coefficient-> to be tuned
 it=0;
 toll_u=1e-6;
 toll_p=1e-6;
 it_max=1000;
 r_u=10;
 r_p=10;
+r_p_vect = [];
+r_u_vect = [];
 
 while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione 
 
@@ -50,6 +52,7 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     M_u=zeros(n);
     b_u=zeros(n,1);
 
+   
     for i=2:n-1
         M_u(i,i)=rho*(u_old(i)+u_old(i+1))/2*A_p(i+1);
         M_u(i,i-1)=-rho*(u_old(i-1)+u_old(i))/2*A_p(i);
@@ -75,7 +78,7 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     b_p=zeros(N,1);
     d_u=zeros(n,1);
 
-    for i=1:n
+    for i=1:n   %need a bit of explanation
         d_u(i)=A_u(i)/M_u(i,i);
     end
 
@@ -114,7 +117,9 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
 
     r_u=norm(M_u*u_calc-b_u)/norm(diag(M_u).*u_calc);
     r_p=norm(b_p);
-
+    
+    r_u_vect = [r_u_vect; r_u];
+    r_p_vect = [r_p_vect; r_p];
     %update the values
     u_new=alpha_u*u_calc+(1-alpha_u)*u_old;
     p_new=alpha_p*p_calc+(1-alpha_p)*p;
@@ -137,21 +142,55 @@ end
 % plot(x_u,u_new,'Linewidth',2)
 % title('velocity')
 
+%% Print relevant values
+
+mean_m = mean(rho*u_new.*A_u);
+check = (rho*u_new(1)*A_in - rho*u_new(end)*A_out)/mean_m;
+fprintf("The final global mass balance is %.2f\n", check);
+fprintf("Number of nodes: %d\n", N);
+fprintf("Under-relaxation coefficients: \\alpha u = %.2f, \\alpha p = %.2f\n ", alpha_u, alpha_p)
+
 
 %% Exact solution and plot
+
+
 u_exact= A_out./A_u*sqrt(2*p_0/rho);
 p_exact= p_0.*(1-(A_out./A_p).^2);
 
 figure
+subplot(1,2,1)
 plot(x_u,u_new,x_u,u_exact,'Linewidth',2)
-title('Velocity')
+title('Velocity', "Interpreter","latex")
 legend('Numerical solution','Exact solution')
-xlabel('x [m]')
-ylabel('v [m/s]')
+xlabel('x [m]', "Interpreter","latex")
+ylabel('v [m/s]', "Interpreter","latex")
+grid on
+
+subplot(1,2,2)
+plot(x_p,p_new,x_p,p_exact,'Linewidth',2)
+title('Pressure', "Interpreter","latex")
+legend('Numerical solution','Exact solution')
+xlabel('x [m]', "Interpreter","latex")
+ylabel('P [Pa]', "Interpreter","latex")
+grid on
+
+
+%% Plot residuals
 
 figure
-plot(x_p,p_new,x_p,p_exact,'Linewidth',2)
-title('Pressure')
-legend('Numerical solution','Exact solution')
-xlabel('x [m]')
-ylabel('P [Pa]')
+
+subplot(1,2,1)
+
+plot(r_u_vect, "Linewidth", 2);
+title("Residual of momentum equation", "interpreter", "latex")
+grid on
+xlabel("Iteration", "Interpreter","latex");
+ylabel("Residual \(r_u\)", "Interpreter","latex");
+
+
+subplot(1,2,2)
+plot(r_p_vect, "LineWidth",2);
+title("RHS of pressure correction equation", "interpreter", "latex");
+grid on
+xlabel("Iteration", "Interpreter","latex");
+ylabel("RHS \(r_p\)", "Interpreter","latex");
