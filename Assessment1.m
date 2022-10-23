@@ -1,5 +1,5 @@
 close all
-clear
+clear all
 clc
 
 %% Data
@@ -127,15 +127,31 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
 end
 
 
-%% plot
+% %% plot
+% 
+% figure
+% plot(x_p,p_new,'Linewidth',2)
+% title('pressure')
+% 
+% figure
+% plot(x_u,u_new,'Linewidth',2)
+% title('velocity')
+
+
+%% Exact solution and plot
+u_exact= A_out./A_u*sqrt(2*p_0/rho);
+p_exact= p_0.*(1-(A_out./A_p).^2);
 
 figure
-plot(x_p,p_new,'Linewidth',2)
-title('pressure')
+plot(x_u,u_new,x_u,u_exact,'Linewidth',2)
+title('Velocity')
+legend('Numerical solution','Exact solution')
+xlabel('x [m]')
+ylabel('v [m/s]')
 
 figure
-plot(x_u,u_new,'Linewidth',2)
-title('velocity')
-
-
-%% Exact solution
+plot(x_p,p_new,x_p,p_exact,'Linewidth',2)
+title('Pressure')
+legend('Numerical solution','Exact solution')
+xlabel('x [m]')
+ylabel('P [Pa]')
