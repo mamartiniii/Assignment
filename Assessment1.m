@@ -12,7 +12,7 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 
 %% Grid
-N=100;
+N=21;  % 100 is a perfect value
 n=N-1;
 x_p=linspace(0,L,N);
 x_u=linspace(x_p(2)/2,L-x_p(2)/2,n);
@@ -35,8 +35,8 @@ u_old=m./(rho*A_u);
 p=p_0-(p_0-p_out).*x_p/L;
 
 %% solve the problem
-alpha_p=0.02;   % under-relaxation coefficient-> to be tuned
-alpha_u=0.02;   % under-relaxation coefficient-> to be tuned
+alpha_p=0.1;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
+alpha_u=0.1;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
 it=0;
 toll_u=1e-6;
 toll_p=1e-6;
