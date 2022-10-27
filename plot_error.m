@@ -9,8 +9,8 @@ clc
 
 m = 1;
 N = 21;
-alpha_p = 0.01;
-alpha_u = 0.01;
+alpha_p = 0.01; %0.00132;  %these are the values that minimize the error for N = 1000
+alpha_u = 0.01; %0.08068;
 toll_u = 1e-6;
 toll_p = toll_u;
 it_max = 1000;
@@ -23,7 +23,7 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 A=@(x) A_in+(A_out- A_in)/L.*x;
 
-NN = 10:10:160;
+NN = 10:10:100;
 hh = 1./NN;
 errvect_u = zeros(size(hh));
 errvect_p = zeros(size(hh));
