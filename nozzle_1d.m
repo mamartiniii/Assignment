@@ -1,6 +1,6 @@
-function [u, p, x_u, x_p] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m)
+function [u, p, x_u, x_p, m_flow] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m)
 %
-% [u, p, x_u, x_p] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m)
+% [u, p, x_u, x_p, m_flow] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m)
 %
 % The function solves the problem of an incompressible flow in a converging
 % nozzle. The SIMPLE algorithm is applied. This is a 1st order algorithm.
@@ -8,6 +8,11 @@ function [u, p, x_u, x_p] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it
 %
 %
 % OUTPUT
+%   u -> vector of velocities (evaluated on a staggered grid)
+%   p -> vector of pressures
+%   x_u
+%   x_p
+%   m_flow -> mass flow rate predicted
 %
 % By Mattia Martini, Francesco Sala, Nicolò Viscusi
 
@@ -131,3 +136,5 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     it=it+1;
 
 end
+
+m_flow = u(end)*rho*A_u(end);

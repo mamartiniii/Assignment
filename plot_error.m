@@ -23,16 +23,17 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 A=@(x) A_in+(A_out- A_in)/L.*x;
 
-NN = [10,20,40, 80, 160];
+NN = 10:10:160;
 hh = 1./NN;
 errvect_u = zeros(size(hh));
 errvect_p = zeros(size(hh));
-
+m_flow_vect = errvect_p;
 
 
 for i =1:length(NN)
     N = NN(i);
-    [u, p, x_u, x_p] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m);
+    [u, p, x_u, x_p, m_flow] = nozzle_1d(A, N, alpha_p, alpha_u, toll_u, toll_p, it_max, m);
+    m_flow_vect(i) = m_flow;
     u_exact= A_out./A(x_u)*sqrt(2*p_0/rho);
     p_exact= p_0.*(1-(A_out./A(x_p)).^2);
     errvect_u(i) = max(abs(u_exact -u));
@@ -49,5 +50,20 @@ grid on
 legend("\(err_p\)", "\(err_u\)", "\(1/N\)", "\(1/N^2\)",  "interpreter", "latex");
 
 fprintf("The SIMPLE method is a 1st order method (due to the QUICK algorithm, which uses the upwind approximation)\n")
+
+
+%% Here we compare the exact value of mass flow rate with the one obtained numerically varying N 
+ 
+m_exact =  rho*A_in*A_out/A_in*sqrt(2*p_0/rho);
+
+figure
+plot(NN, m_exact*ones(size(NN)), "--", NN, m_flow_vect,'-o', "LineWidth",2)
+title("Comparison of numerical mass flow rate and exact value vs number of grid nodes \(N\)", "interpreter", "latex")
+xlabel("Number of nodes \(N\)", "Interpreter","latex")
+ylabel("Mass flow rate", "interpreter", "latex")
+grid on
+legend("Exact value", "Numerical value",  "interpreter", "latex");
+
+
 
 
