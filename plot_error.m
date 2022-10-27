@@ -60,7 +60,7 @@ figure
 plot(NN, m_exact*ones(size(NN)), "--", NN, m_flow_vect,'-o', "LineWidth",2)
 title("Comparison of numerical mass flow rate and exact value vs number of grid nodes \(N\)", "interpreter", "latex")
 xlabel("Number of nodes \(N\)", "Interpreter","latex")
-ylabel("Mass flow rate", "interpreter", "latex")
+ylabel("Mass flow rate [kg/s]", "interpreter", "latex")
 grid on
 legend("Exact value", "Numerical value",  "interpreter", "latex");
 
