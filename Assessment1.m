@@ -160,19 +160,19 @@ p_exact= p_0.*(1-(A_out./A_p).^2);
 
 figure
 subplot(1,2,1)
-plot(x_u,u_new,x_u,u_exact,'Linewidth',2)
-title('Velocity', "Interpreter","latex")
-legend('Numerical solution','Exact solution')
-xlabel('x [m]', "Interpreter","latex")
-ylabel('v [m/s]', "Interpreter","latex")
+plot(x_u,u_new,x_u,u_exact,'Linewidth',3)
+title('Velocity', "Interpreter","latex", FontSize=20)
+legend('Numerical solution','Exact solution', fontsize=20)
+xlabel('x [m]', "Interpreter","latex", FontSize=20)
+ylabel('v [m/s]', "Interpreter","latex", FontSize=20)
 grid on
 
 subplot(1,2,2)
-plot(x_p,p_new,x_p,p_exact,'Linewidth',2)
-title('Pressure', "Interpreter","latex")
-legend('Numerical solution','Exact solution')
-xlabel('x [m]', "Interpreter","latex")
-ylabel('P [Pa]', "Interpreter","latex")
+plot(x_p,p_new,x_p,p_exact,'Linewidth',3)
+title('Pressure', "Interpreter","latex", Fontsize=20)
+legend('Numerical solution','Exact solution', fontsize=20)
+xlabel('x [m]', "Interpreter","latex", FontSize=20)
+ylabel('P [Pa]', "Interpreter","latex", fontsize=20)
 grid on
 
 
@@ -182,19 +182,19 @@ figure;
 
 subplot(1,2,1)
 
-plot(r_u_vect, "Linewidth", 2);
-title("Residual of momentum equation", "interpreter", "latex")
+plot(r_u_vect, "Linewidth", 3);
+title("Residual of momentum equation", "interpreter", "latex", fontsize=20)
 grid on
-xlabel("Iteration", "Interpreter","latex");
-ylabel("Residual \(r_u\)", "Interpreter","latex");
+xlabel("Iteration", "Interpreter","latex", fontsize=20);
+ylabel("Residual \(r_u\)", "Interpreter","latex", FontSize=20);
 
 
 subplot(1,2,2)
-plot(r_p_vect, "LineWidth",2);
-title("RHS of pressure correction equation", "interpreter", "latex");
+plot(r_p_vect, "LineWidth",3);
+title("RHS of pressure correction equation", "interpreter", "latex", FontSize=20);
 grid on
-xlabel("Iteration", "Interpreter","latex");
-ylabel("RHS \(r_p\)", "Interpreter","latex");
+xlabel("Iteration", "Interpreter","latex", FontSize=20);
+ylabel("RHS \(r_p\)", "Interpreter","latex", FontSize=20);
 
 
 %% Relative errors for final u, p and and flow rate
@@ -211,3 +211,5 @@ err_p = err_p / abs(p_exact(end));
 m_exact = A_out * sqrt(2 * rho * p_0);
 err_m = abs(m_out - m_exact);
 err_m = err_m / m_exact;
+
+
