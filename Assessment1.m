@@ -22,7 +22,7 @@ x_u=x_u';
 
 A_p=zeros(N,1);
 A_u=zeros(n,1);
-A=@(x) A_in+(A_out- A_in)/L.*x;
+A=@(x) A_in + ((A_out- A_in)/L * x);
 A_p=A(x_p);
 A_u=A(x_u);
 
@@ -145,14 +145,15 @@ end
 %% Print relevant values
 
 mean_m = mean(rho*u_new.*A_u);
-check = (rho*u_new(1)*A_in - rho*u_new(end)*A_out)/mean_m;
+m_in = rho*u_new(1)*A_in;
+m_out = rho*u_new(end)*A_out;
+check = (m_in - m_out)/mean_m;
 fprintf("The final global mass balance is %.2f\n", check);
 fprintf("Number of nodes: %d\n", N);
 fprintf("Under-relaxation coefficients: \\alpha u = %.2f, \\alpha p = %.2f\n ", alpha_u, alpha_p)
 
 
 %% Exact solution and plot
-
 
 u_exact= A_out./A_u*sqrt(2*p_0/rho);
 p_exact= p_0.*(1-(A_out./A_p).^2);
@@ -177,7 +178,7 @@ grid on
 
 %% Plot residuals
 
-figure
+figure;
 
 subplot(1,2,1)
 
@@ -194,3 +195,19 @@ title("RHS of pressure correction equation", "interpreter", "latex");
 grid on
 xlabel("Iteration", "Interpreter","latex");
 ylabel("RHS \(r_p\)", "Interpreter","latex");
+
+
+%% Relative errors for final u, p and and flow rate
+
+% relative error for final u
+err_u = abs(u_new(end) - u_exact(end));
+err_u = err_u / u_exact(end);
+
+% relative error for final p (too small numbers, it should be zero)
+err_p = abs(p_new(end) - p_exact(end));
+err_p = err_p / abs(p_exact(end));
+
+% relative error for final flow rate
+m_exact = A_out * sqrt(2 * rho * p_0);
+err_m = abs(m_out - m_exact);
+err_m = err_m / m_exact;
