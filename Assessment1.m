@@ -166,6 +166,7 @@ legend('Numerical solution','Exact solution', fontsize=20)
 xlabel('x [m]', "Interpreter","latex", FontSize=20)
 ylabel('v [m/s]', "Interpreter","latex", FontSize=20)
 grid on
+set(gca,'FontSize',15)
 
 subplot(1,2,2)
 plot(x_p,p_new,x_p,p_exact,'Linewidth',3)
@@ -174,6 +175,8 @@ legend('Numerical solution','Exact solution', fontsize=20)
 xlabel('x [m]', "Interpreter","latex", FontSize=20)
 ylabel('P [Pa]', "Interpreter","latex", fontsize=20)
 grid on
+set(gca,'FontSize',15)
+
 
 
 %% Plot residuals
@@ -187,6 +190,7 @@ title("Residual of momentum equation", "interpreter", "latex", fontsize=20)
 grid on
 xlabel("Iteration", "Interpreter","latex", fontsize=20);
 ylabel("Residual \(r_u\)", "Interpreter","latex", FontSize=20);
+set(gca,'FontSize',15)
 
 
 subplot(1,2,2)
@@ -195,6 +199,7 @@ title("RHS of pressure correction equation", "interpreter", "latex", FontSize=20
 grid on
 xlabel("Iteration", "Interpreter","latex", FontSize=20);
 ylabel("RHS \(r_p\)", "Interpreter","latex", FontSize=20);
+set(gca,'FontSize',15)
 
 
 %% Relative errors for final u, p and and flow rate
