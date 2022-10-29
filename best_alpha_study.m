@@ -62,8 +62,10 @@ alpha_opt = fminsearch(@nozzle1d_alpha, [0.1,0.1]);
 fprintf("The optimal value for alpha_p is %.5f, while the optimal value for alpha_u is %.5f", alpha_opt(2), alpha_opt(1));
 
 
-alpha_u_vect = linspace(0.01, 0.15, 40);
-alpha_p_vect = linspace(0.01,0.15, 40);
+ 
+alpha_p_vect = linspace(0.03,0.12, 30);    %it s the x-axis
+alpha_u_vect = linspace(0.05, 0.15, 30);
+
 
 
 
@@ -71,15 +73,18 @@ for i =1:length(alpha_p_vect)
     for j =1:length(alpha_u_vect)
     
    
-    alpha_opt = [alpha_p_vect(i), alpha_u_vect(j)];
+    alpha_opt = [alpha_u_vect(j), alpha_p_vect(i)];
     it = nozzle1d_alpha(alpha_opt);
     it_matrix(i,j) = it;
     end
 end
 
-[X,Y] = meshgrid(alpha_u_vect, alpha_p_vect);
+[P,U] = meshgrid(alpha_p_vect, alpha_u_vect);
 
-surf(X,Y,it_matrix);
+surf(P,U,it_matrix);
+xlabel("alpha pressure")
+ylabel("alpha velocity")
+zlabel("number of iterations")
 
 
 

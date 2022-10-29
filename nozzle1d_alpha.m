@@ -20,7 +20,7 @@ toll_u = 1e-6;
 toll_p = toll_u;
 it_max = 1e5;
 N = 21;
-fprintf("The number of grid nodes is %d\n", N);
+%fprintf("The number of grid nodes is %d\n", N);
 
 L=2;       %[m]
 rho=1;     %[kg/m^3]
