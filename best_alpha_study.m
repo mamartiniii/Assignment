@@ -57,7 +57,7 @@ legend("Pressure error", "Velocity error",  "interpreter", "latex");
 % The number of grid nodes is fixed. When the function nozzle1d_alpha is
 % called, this number is printed out
 clc
-alpha_opt = fminsearch(@nozzle1d_alpha, [0.001, 0.001]);
+alpha_opt = fminsearch(@nozzle1d_alpha, [0.01, 0.01]);
 
 fprintf("The optimal value for alpha_p is %.5f, while the optimal value for alpha_u is %.5f", alpha_opt(2), alpha_opt(1));
 

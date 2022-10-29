@@ -1,4 +1,4 @@
-function err = nozzle1d_alpha(alpha_vect)
+function it = nozzle1d_alpha(alpha_vect)
 
 
 % This function is with the simplex method (derivative free optimization
@@ -18,8 +18,8 @@ alpha_p = alpha_vect(2);
 m = 1;  % guess on mass flow rate
 toll_u = 1e-6;
 toll_p = toll_u;
-it_max = 1000;
-N = 1000;
+it_max = 1e5;
+N = 21;
 fprintf("The number of grid nodes is %d\n", N);
 
 L=2;       %[m]
@@ -145,12 +145,12 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
 end
 
 
-u_exact= A_out./A(x_u)*sqrt(2*p_0/rho);
-p_exact= p_0.*(1-(A_out./A(x_p)).^2);
-err_u= max(abs(u_exact -u));
-err_p = max(abs(p_exact - p));
-
-err = err_p + err_u;
+% u_exact= A_out./A(x_u)*sqrt(2*p_0/rho);
+% p_exact= p_0.*(1-(A_out./A(x_p)).^2);
+% err_u= max(abs(u_exact -u));
+% err_p = max(abs(p_exact - p));
+% 
+% err = err_p + err_u;
 
 
 
