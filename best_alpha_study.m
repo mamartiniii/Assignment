@@ -63,12 +63,12 @@ fprintf("The optimal value according to Nelder Mead (check the initial guess) al
 
 
  
-alpha_p_vect = linspace(0.0,0.3, 10);    %it s the x-axis
-alpha_u_vect = linspace(-0.2, 1.8, 10);
+alpha_p_vect = linspace(0.1,0.25, 10);    %it s the x-axis
+alpha_u_vect = linspace(0.1, 1.7, 10);
 
 
 
-
+tic   %69 secondi circa sul mio pc per un 100x100
 for i =1:length(alpha_u_vect)
     for j =1:length(alpha_p_vect)
     
@@ -80,14 +80,17 @@ for i =1:length(alpha_u_vect)
 end
 
 
-
+toc
 [U,P] = meshgrid(alpha_u_vect, alpha_p_vect);
 figure
 surf(U,P,it_matrix');
-ylabel("alpha pressure")
-xlabel("alpha velocity")
-zlabel("number of iterations")
-
+colormap winter
+ylabel("\(\alpha_p\)", "Interpreter","latex", FontSize=20)
+xlabel("\(\alpha_u\)", "interpreter", "latex", fontsize=20)
+zlabel("Number of iterations to reach a tolerance of \(1e-6\)", "Interpreter","latex", FontSize=20)
+title("Required iterations vs under-relaxation coefficients, \(N=21\), \(tol = 1e-6\)", "Interpreter","latex", FontSize=20)
+set(gca,'FontSize',15)
+hold on
 min_iter = min(min(it_matrix));
 [pos_u,pos_p]=find(it_matrix == min_iter);
 
@@ -96,6 +99,22 @@ alpha_p_opt = alpha_p_vect(pos_p);
 
 fprintf("The grid search yields alpha_u_opt = %.5f, alpha_p_opt = %.5f\n", alpha_u_opt(1), alpha_p_opt(1))
 fprintf("The miminum found is %d iterations\n", min(min(it_matrix)))
+
+plot3(alpha_u_opt(1),alpha_p_opt(1), min(min(it_matrix)), '.r','markersize',50)
+
+
+P = it_matrix;
+
+for i=1:size(P,1)
+    for j = 1:size(P,2)
+        if (P(i,j) >1000)
+            P(i,j) = P(i,j)-1000;
+        end
+    end
+end
+
+disp(sum(sum(P)))
+
 
 
 

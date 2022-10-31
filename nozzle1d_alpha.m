@@ -112,9 +112,9 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     M_p(N,N)=1;
     b_p(N)=0;
 
-    if (cond(M_p) >1e4)
+    if (cond(M_p) >1e3)
         %fprintf("eccoci\n")
-        it = 1000;
+        it = it +1000;
         break;
     else
         p_first=M_p\b_p;
