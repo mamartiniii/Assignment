@@ -9,8 +9,8 @@ clc
 
 m = 1;
 N = 21;
-alpha_p = 0.01; %0.00132;  %these are the values that minimize the error for N = 1000
-alpha_u = 0.01; %0.08068;
+alpha_p = 0.01;%0.00934; %0.00132;  %these are the values that minimize the error for N = 1000
+alpha_u = 0.01;%0.03460; %0.08068;
 toll_u = 1e-6;
 toll_p = toll_u;
 it_max = 1000;
@@ -23,7 +23,7 @@ p_0=10;    %[Pa]
 p_out=0;   %[Pa]  NB: pressure is relative
 A=@(x) A_in+(A_out- A_in)/L.*x;
 
-NN = 10:10:100;
+NN = 10:10:80;
 hh = 1./NN;
 errvect_u = zeros(size(hh));
 errvect_p = zeros(size(hh));
@@ -42,13 +42,13 @@ end
 
 % the plot shows that the error decreases with 1/N, as expected
 
-loglog(NN, errvect_p, "-o", NN, errvect_u, '-o', NN, 1./NN, "--", NN, 1./(NN.^2), "--", "LineWidth",2)
-title("Empirical estimation of order of accuracy of the SIMPLE algorithm", "interpreter", "latex")
-xlabel("Number of nodes \(N\)", "Interpreter","latex")
-ylabel("Error", "interpreter", "latex")
+loglog(NN, errvect_p, "-o", NN, errvect_u, '-o', NN, 1./NN, "--", NN, 1./(NN.^2), "--", "LineWidth",3)
+title("Empirical estimation of order of accuracy of the SIMPLE algorithm", "interpreter", "latex", FontSize=25)
+xlabel("Number of nodes \(N\)", "Interpreter","latex", FontSize=20)
+ylabel("Error", "interpreter", "latex", fontsize=20)
 grid on
-legend("\(err_p\)", "\(err_u\)", "\(1/N\)", "\(1/N^2\)",  "interpreter", "latex");
-
+legend("\(err_p\)", "\(err_u\)", "\(1/N\)", "\(1/N^2\)",  "interpreter", "latex", fontsize=20);
+set(gca,'FontSize',15)
 fprintf("The SIMPLE method is a 1st order method (due to the QUICK algorithm, which uses the upwind approximation)\n")
 
 
@@ -57,12 +57,13 @@ fprintf("The SIMPLE method is a 1st order method (due to the QUICK algorithm, wh
 m_exact =  rho*A_in*A_out/A_in*sqrt(2*p_0/rho);
 
 figure
-plot(NN, m_exact*ones(size(NN)), "--", NN, m_flow_vect,'-o', "LineWidth",2)
-title("Comparison of numerical mass flow rate and exact value vs number of grid nodes \(N\)", "interpreter", "latex")
-xlabel("Number of nodes \(N\)", "Interpreter","latex")
-ylabel("Mass flow rate [kg/s]", "interpreter", "latex")
+plot(NN, m_exact*ones(size(NN)), "--", NN, m_flow_vect,'-o', "LineWidth",3)
+title("Comparison of numerical mass flow rate and exact value vs number of grid nodes \(N\)", "interpreter", "latex", FontSize=25)
+xlabel("Number of nodes \(N\)", "Interpreter","latex", FontSize=20)
+ylabel("Mass flow rate [kg/s]", "interpreter", "latex", FontSize=20)
 grid on
-legend("Exact value", "Numerical value",  "interpreter", "latex");
+legend("Exact value", "Numerical value",  "interpreter", "latex", fontsize=20);
+set(gca,'FontSize',15)
 
 
 

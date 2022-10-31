@@ -18,7 +18,7 @@ alpha_p = alpha_vect(2);
 m = 1;  % guess on mass flow rate
 toll_u = 1e-6;
 toll_p = toll_u;
-it_max = 1e5;
+it_max = 1e3;
 N = 21;
 %fprintf("The number of grid nodes is %d\n", N);
 
@@ -112,7 +112,14 @@ while ((r_u>toll_u && r_p>toll_p) && (it<it_max))  % controllare sta condizione
     M_p(N,N)=1;
     b_p(N)=0;
 
-    p_first=M_p\b_p;
+    if (cond(M_p) >1e4)
+        %fprintf("eccoci\n")
+        it = 1000;
+        break;
+    else
+        p_first=M_p\b_p;
+    end
+
 
     % correct pressure and velocity
     u_calc=zeros(n,1);

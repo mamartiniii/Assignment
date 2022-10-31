@@ -35,8 +35,8 @@ u_old=m./(rho*A_u);
 p=p_0-(p_0-p_out).*x_p/L;
 
 %% solve the problem
-alpha_p=0.1;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
-alpha_u=0.1;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
+alpha_p= 0.1;%0.19697;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
+alpha_u=0.1; %1.59798;   % under-relaxation coefficient-> to be tuned. 0.02 is a perfect value
 it=0;
 toll_u=1e-6;
 toll_p=1e-6;
@@ -162,7 +162,7 @@ figure
 subplot(1,2,1)
 plot(x_u,u_new,x_u,u_exact,'Linewidth',3)
 title('Velocity', "Interpreter","latex", FontSize=20)
-legend('Numerical solution','Exact solution', fontsize=20)
+legend('Numerical solution','Exact solution', "interpreter", "latex", fontsize=20)
 xlabel('x [m]', "Interpreter","latex", FontSize=20)
 ylabel('v [m/s]', "Interpreter","latex", FontSize=20)
 grid on
@@ -171,7 +171,7 @@ set(gca,'FontSize',15)
 subplot(1,2,2)
 plot(x_p,p_new,x_p,p_exact,'Linewidth',3)
 title('Pressure', "Interpreter","latex", Fontsize=20)
-legend('Numerical solution','Exact solution', fontsize=20)
+legend('Numerical solution','Exact solution', "interpreter", "latex", fontsize=20)
 xlabel('x [m]', "Interpreter","latex", FontSize=20)
 ylabel('P [Pa]', "Interpreter","latex", fontsize=20)
 grid on

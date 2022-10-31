@@ -57,34 +57,45 @@ legend("Pressure error", "Velocity error",  "interpreter", "latex");
 % The number of grid nodes is fixed. When the function nozzle1d_alpha is
 % called, this number is printed out
 clc
-alpha_opt = fminsearch(@nozzle1d_alpha, [0.1,0.1]);
+alpha_opt = fminsearch(@nozzle1d_alpha, [0.1,0.13]);  %alpha_u, alpha_p
 
-fprintf("The optimal value for alpha_p is %.5f, while the optimal value for alpha_u is %.5f", alpha_opt(2), alpha_opt(1));
+fprintf("The optimal value according to Nelder Mead (check the initial guess) alpha_p is %.5f, while the optimal value for alpha_u is %.5f\n", alpha_opt(2), alpha_opt(1));
 
 
  
-alpha_p_vect = linspace(0.03,0.12, 30);    %it s the x-axis
-alpha_u_vect = linspace(0.05, 0.15, 30);
+alpha_p_vect = linspace(0.0,0.3, 10);    %it s the x-axis
+alpha_u_vect = linspace(-0.2, 1.8, 10);
 
 
 
 
-for i =1:length(alpha_p_vect)
-    for j =1:length(alpha_u_vect)
+for i =1:length(alpha_u_vect)
+    for j =1:length(alpha_p_vect)
     
    
-    alpha_opt = [alpha_u_vect(j), alpha_p_vect(i)];
+    alpha_opt = [alpha_u_vect(i), alpha_p_vect(j)];
     it = nozzle1d_alpha(alpha_opt);
     it_matrix(i,j) = it;
     end
 end
 
-[P,U] = meshgrid(alpha_p_vect, alpha_u_vect);
 
-surf(P,U,it_matrix);
-xlabel("alpha pressure")
-ylabel("alpha velocity")
+
+[U,P] = meshgrid(alpha_u_vect, alpha_p_vect);
+figure
+surf(U,P,it_matrix');
+ylabel("alpha pressure")
+xlabel("alpha velocity")
 zlabel("number of iterations")
+
+min_iter = min(min(it_matrix));
+[pos_u,pos_p]=find(it_matrix == min_iter);
+
+alpha_u_opt = alpha_u_vect(pos_u);
+alpha_p_opt = alpha_p_vect(pos_p);
+
+fprintf("The grid search yields alpha_u_opt = %.5f, alpha_p_opt = %.5f\n", alpha_u_opt(1), alpha_p_opt(1))
+fprintf("The miminum found is %d iterations\n", min(min(it_matrix)))
 
 
 
