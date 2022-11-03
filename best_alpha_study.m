@@ -57,14 +57,15 @@ legend("Pressure error", "Velocity error",  "interpreter", "latex");
 % The number of grid nodes is fixed. When the function nozzle1d_alpha is
 % called, this number is printed out
 clc
-alpha_opt = fminsearch(@nozzle1d_alpha, [0.1,0.13]);  %alpha_u, alpha_p
+options = optimset('Display','final');
+[alpha_opt, min_NM, ~, output] = fminsearch(@nozzle1d_alpha, [1, 0.1],options);  %alpha_u, alpha_p
 
 fprintf("The optimal value according to Nelder Mead (check the initial guess) alpha_p is %.5f, while the optimal value for alpha_u is %.5f\n", alpha_opt(2), alpha_opt(1));
 
 
  
-alpha_p_vect = linspace(0.1,0.25, 10);    %it s the x-axis
-alpha_u_vect = linspace(0.1, 1.7, 10);
+alpha_p_vect = linspace(0,0.25, 50);    %it s the x-axis
+alpha_u_vect = linspace(0, 2, 50);
 
 
 
@@ -114,6 +115,13 @@ for i=1:size(P,1)
 end
 
 disp(sum(sum(P)))
+
+figure
+
+contourf(alpha_u_vect, alpha_p_vect,it_matrix', 6, "Linewidth", 3)
+colormap(hot)
+title('Hot Colormap')
+
 
 
 
