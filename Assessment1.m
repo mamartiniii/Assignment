@@ -205,12 +205,12 @@ set(gca,'FontSize',15)
 %% Relative errors for final u, p and and flow rate
 
 % relative error for final u
-err_u = abs(u_new(end) - u_exact(end));
-err_u = err_u / u_exact(end);
+err_u = abs(u_new - u_exact);
+err_u = err_u ./ u_exact;
 
 % relative error for final p (too small numbers, it should be zero)
-err_p = abs(p_new(end) - p_exact(end));
-err_p = err_p / abs(p_exact(end));
+err_p = abs(p_new - p_exact);
+err_p = err_p ./ abs(p_exact);
 
 % relative error for final flow rate
 m_exact = A_out * sqrt(2 * rho * p_0);
