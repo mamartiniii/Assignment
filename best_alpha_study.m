@@ -57,15 +57,15 @@ legend("Pressure error", "Velocity error",  "interpreter", "latex");
 % The number of grid nodes is fixed. When the function nozzle1d_alpha is
 % called, this number is printed out
 clc
-options = optimset('Display','final');
-[alpha_opt, min_NM, ~, output] = fminsearch(@nozzle1d_alpha, [1, 0.1],options);  %alpha_u, alpha_p
+options = optimset('Display','final','TolFun', 1e-8,'TolX', 1e-8);
+[alpha_opt, min_NM, ~, output] = fminsearch(@nozzle1d_alpha, [0.8667, 0.1667],options);  %alpha_u, alpha_p
 
 fprintf("The optimal value according to Nelder Mead (check the initial guess) alpha_p is %.5f, while the optimal value for alpha_u is %.5f\n", alpha_opt(2), alpha_opt(1));
 
 
  
-alpha_p_vect = linspace(0,0.25, 50);    %it s the x-axis
-alpha_u_vect = linspace(0, 2, 50);
+alpha_p_vect = linspace(0,0.5, 10);    %it s the x-axis
+alpha_u_vect = linspace(0, 1.95, 10);
 
 
 
@@ -80,11 +80,14 @@ for i =1:length(alpha_u_vect)
     end
 end
 
+it_matrix(it_matrix>1000)=1000;
 
 toc
 [U,P] = meshgrid(alpha_u_vect, alpha_p_vect);
-figure
-surf(U,P,it_matrix');
+figure 
+surf(alpha_u_vect,alpha_p_vect,it_matrix,'EdgeColor','none');
+%surf(U,P,it_matrix');
+c=colorbar
 colormap winter
 ylabel("\(\alpha_p\)", "Interpreter","latex", FontSize=20)
 xlabel("\(\alpha_u\)", "interpreter", "latex", fontsize=20)
@@ -118,11 +121,21 @@ disp(sum(sum(P)))
 
 figure
 
-contourf(alpha_u_vect, alpha_p_vect,it_matrix', 6, "Linewidth", 3)
-colormap(hot)
-title('Hot Colormap')
+contourf(alpha_u_vect, alpha_p_vect,it_matrix', 6, "Linewidth", 3,'Edgecolor','none')
+c=colorbar
+colormap='winter'
+
+ylabel("\(\alpha_p\)", "Interpreter","latex", 'FontSize',30)
+xlabel("\(\alpha_u\)", "interpreter", "latex", 'Fontsize',30)
+title("Required iterations vs under-relaxation coefficients, \(N=21\), \(tol = 1e-6\)", "Interpreter","latex", 'FontSize',30)
+set(gca,'FontSize',35)
+
+hold on
+plot3(alpha_u_opt(1),alpha_p_opt(1), min(min(it_matrix)), '.r','markersize',50)
 
 
+it_prova=nozzle1d_alpha([1.55556,0.194]);
+disp(it_prova)
 
 
 

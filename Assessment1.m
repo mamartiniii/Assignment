@@ -145,8 +145,8 @@ end
 %% Print relevant values
 
 mean_m = mean(rho*u_new.*A_u);
-m_in = rho*u_new(1)*A_in;
-m_out = rho*u_new(end)*A_out;
+m_in = rho*u_new(1)*A_u(1);
+m_out = rho*u_new(end)*A_u(end);
 check = (m_in - m_out)/mean_m;
 fprintf("The final global mass balance is %.2f\n", check);
 fprintf("Number of nodes: %d\n", N);
@@ -161,21 +161,21 @@ p_exact= p_0.*(1-(A_out./A_p).^2);
 figure
 subplot(1,2,1)
 plot(x_u,u_new,x_u,u_exact,'Linewidth',3)
-title('Velocity', "Interpreter","latex", FontSize=20)
-legend('Numerical solution','Exact solution', "interpreter", "latex", fontsize=20)
-xlabel('x [m]', "Interpreter","latex", FontSize=20)
-ylabel('v [m/s]', "Interpreter","latex", FontSize=20)
+title('Velocity', "Interpreter","latex", 'FontSize',30)
+legend('Numerical solution','Exact solution', "Interpreter", "latex", 'FontSize',26)
+xlabel('x [m]', "Interpreter","latex",'FontSize',30)
+ylabel('v [m/s]', "Interpreter","latex", 'FontSize',30)
 grid on
-set(gca,'FontSize',15)
+set(gca,'FontSize',35)
 
 subplot(1,2,2)
 plot(x_p,p_new,x_p,p_exact,'Linewidth',3)
-title('Pressure', "Interpreter","latex", Fontsize=20)
-legend('Numerical solution','Exact solution', "interpreter", "latex", fontsize=20)
-xlabel('x [m]', "Interpreter","latex", FontSize=20)
-ylabel('P [Pa]', "Interpreter","latex", fontsize=20)
+title('Pressure', "Interpreter","latex",'FontSize',30)
+legend('Numerical solution','Exact solution', "Interpreter", "latex", 'FontSize',26)
+xlabel('x [m]', "Interpreter","latex", 'FontSize',30)
+ylabel('P [Pa]', "Interpreter","latex", 'FontSize',30)
 grid on
-set(gca,'FontSize',15)
+set(gca,'FontSize',35)
 
 
 
@@ -186,20 +186,20 @@ figure;
 subplot(1,2,1)
 
 plot(r_u_vect, "Linewidth", 3);
-title("Residual of momentum equation", "interpreter", "latex", fontsize=20)
+title("Residual of momentum equation", "interpreter", "latex", 'FontSize',30)
 grid on
-xlabel("Iteration", "Interpreter","latex", fontsize=20);
-ylabel("Residual \(r_u\)", "Interpreter","latex", FontSize=20);
-set(gca,'FontSize',15)
+xlabel("Iteration", "Interpreter","latex", 'FontSize',30);
+ylabel("Residual \(r_u\)", "Interpreter","latex", 'FontSize',30);
+set(gca,'FontSize',35)
 
 
 subplot(1,2,2)
 plot(r_p_vect, "LineWidth",3);
-title("RHS of pressure correction equation", "interpreter", "latex", FontSize=20);
+title("RHS of pressure correction equation", "interpreter", "latex", 'FontSize',30);
 grid on
-xlabel("Iteration", "Interpreter","latex", FontSize=20);
-ylabel("RHS \(r_p\)", "Interpreter","latex", FontSize=20);
-set(gca,'FontSize',15)
+xlabel("Iteration", "Interpreter","latex", 'FontSize',30);
+ylabel("RHS \(r_p\)", "Interpreter","latex", 'FontSize',30);
+set(gca,'FontSize',35)
 
 
 %% Relative errors for final u, p and and flow rate
@@ -210,11 +210,18 @@ err_u = err_u ./ u_exact;
 
 % relative error for final p (too small numbers, it should be zero)
 err_p = abs(p_new - p_exact);
-err_p = err_p ./ abs(p_exact);
+%err_p = err_p ./ abs(p_exact);
 
 % relative error for final flow rate
 m_exact = A_out * sqrt(2 * rho * p_0);
 err_m = abs(m_out - m_exact);
 err_m = err_m / m_exact;
+
+figure 
+plot(err_u)
+
+
+figure 
+plot(err_p (1:end))
 
 
